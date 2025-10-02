@@ -76,10 +76,26 @@
       const phone = '+7 ' + document.getElementById('phone').value;
       const session = document.getElementById('session').value;
 
+      // Күн мен уақытты қосу
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const date = `${day}.${month}.${year}`;
+      const time = `${hours}:${minutes}:${seconds}`;
+
       // Telegram Bot параметрлері
-      const botToken = '8208855026:AAHm96D1DUAblJ10C2CZv6_0fN0gwuOEMOs'; // BotFather-дан алған токен
-      const chatId = '5166519286';     // Сізге хабар келетін Telegram чат ID
-      const text = `Жаңа тапсырыс!\nАты-жөні: ${name}\nТелефон: ${phone}\nФотосессия: ${session}`;
+      const botToken = '8208855026:AAHm96D1DUAblJ10C2CZv6_0fN0gwuOEMOs';
+      const chatId = '5166519286';
+      const text = `Жаңа тапсырыс!
+Аты-жөні: ${name}
+Телефон: ${phone}
+Фотосессия: ${session}
+Күні: ${date}
+Уақыты: ${time}`;
 
       fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
         .then(() => {
