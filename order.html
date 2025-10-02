@@ -18,7 +18,7 @@
     .phone-group { display:flex; }
     .phone-group input:first-child { width:60px; text-align:center; border-radius:6px 0 0 6px; background:#222; border:none; color:#fff; }
     .phone-group input:last-child { flex:1; border-radius:0 6px 6px 0; border:none; background:#222; color:#fff; }
-    .message { margin-top:15px; font-weight:bold; color:#f1c40f; }
+    .message { margin-top:15px; font-weight:bold; color:#f1c40f; display:none; }
   </style>
 </head>
 <body>
@@ -49,15 +49,15 @@
       <button type="submit">Жіберу</button>
     </form>
 
-    <div id="message" class="message" style="display:none;">Менеджерлер сізбен хабарласады.</div>
+    <div id="message" class="message">Менеджерлер сізбен хабарласады.</div>
   </div>
 
   <script>
     const phoneInput = document.getElementById("phone");
 
-    // +7 777 777 77 77 формат
+    // +7 777 777 77 77 форматқа келтіру
     phoneInput.addEventListener("input", function() {
-      let x = this.value.replace(/\D/g, '').substring(0, 10); // тек соңғы 10 цифр
+      let x = this.value.replace(/\D/g, '').substring(0, 10); // тек 10 цифр
       let formatted = "";
       if(x.length > 0) formatted = x.substring(0,3);
       if(x.length >= 4) formatted += " " + x.substring(3,6);
@@ -76,12 +76,17 @@
       const phone = '+7 ' + document.getElementById('phone').value;
       const session = document.getElementById('session').value;
 
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      orders.push({name: name, phone: phone, session: session});
-      localStorage.setItem('orders', JSON.stringify(orders));
+      // Telegram Bot параметрлері
+      const botToken = '8208855026:AAHm96D1DUAblJ10C2CZv6_0fN0gwuOEMOs'; // BotFather-дан алған токен
+      const chatId = '5166519286';     // Сізге хабар келетін Telegram чат ID
+      const text = `Жаңа тапсырыс!\nАты-жөні: ${name}\nТелефон: ${phone}\nФотосессия: ${session}`;
 
-      message.style.display = 'block';
-      form.reset();
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
+        .then(() => {
+          message.style.display = 'block';
+          form.reset();
+        })
+        .catch(err => alert('Хабар жіберу сәтсіз аяқталды'));
     });
   </script>
 </body>
