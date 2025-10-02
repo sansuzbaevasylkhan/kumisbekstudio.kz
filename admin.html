@@ -35,8 +35,6 @@
           <th>Аты-жөні</th>
           <th>Телефон</th>
           <th>Фотосессия түрі</th>
-          <th>Уақыт</th>
-          <th>Күн</th>
           <th>Әрекет</th>
         </tr>
       </thead>
@@ -45,45 +43,66 @@
   </div>
 
   <script>
-    const correctPassword = "2007"; // Құпиясөзді осында қойыңыз
+    const correctPassword = '2007'; // Құпиясөзді осында қойыңыз
 
-    function checkPassword(){
+    function checkPassword() {
       const input = document.getElementById('adminPassword').value;
-      if(input === correctPassword){
+      if (input === correctPassword) {
         document.getElementById('passwordDiv').style.display = 'none';
         document.getElementById('content').style.display = 'block';
         loadOrders();
       } else {
-        document.getElementById('errorMsg').textContent = "Құпиясөз дұрыс емес!";
+        document.getElementById('errorMsg').textContent = 'Құпиясөз дұрыс емес!';
       }
     }
 
-    function loadOrders(){
+    function loadOrders() {
       const ordersTable = document.getElementById('ordersTable');
       ordersTable.innerHTML = ''; // Кестені тазалау
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
-      orders.forEach((order, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${order.name}</td>
-          <td>${order.phone}</td>
-          <td>${order.session}</td>
-          <td>${order.time || '-'}</td>
-          <td>${order.date || '-'}</td>
-          <td><button class="deleteBtn" onclick="deleteOrder(${index})">Өшіру</button></td>
-        `;
-        ordersTable.appendChild(tr);
-      });
+      const botToken = 'ВАШ_BOT_TOKEN'; // BotFather-дан алған токен
+      const chatId = 'ВАШ_CHAT_ID'; // Сізге хабар келетін Telegram чат ID
+
+      fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+        .then(response => response.json())
+        .then(data => {
+          const messages = data.result.filter(update => update.message.chat.id === chatId);
+          messages.forEach(message => {
+            const order = parseOrderMessage(message.message.text);
+            if (order) {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${order.name}</td>
+                <td>${order.phone}</td>
+                <td>${order.session}</td>
+                <td><button class="deleteBtn" onclick="deleteOrder(${message.update_id})">Өшіру</button></td>
+              `;
+              ordersTable.appendChild(tr);
+            }
+          });
+        })
+        .catch(err => alert('Тапсырыстарды алу сәтсіз аяқталды'));
     }
 
-    function deleteOrder(index){
-      let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      if(confirm("Бұл тапсырысты өшіргіңіз келеді ме?")){
-        orders.splice(index, 1); // Тапсырысты массивтен жою
-        localStorage.setItem('orders', JSON.stringify(orders)); // Жаңартылған массивті сақтау
-        loadOrders(); // Кестені қайта салу
+    function parseOrderMessage(text) {
+      const lines = text.split('\n');
+      if (lines.length >= 3) {
+        return {
+          name: lines[0].replace('Аты-жөні: ', ''),
+          phone: lines[1].replace('Телефон: ', ''),
+          session: lines[2].replace('Фотосессия: ', '')
+        };
       }
+      return null;
+    }
+
+    function deleteOrder(updateId) {
+      const botToken = '8208855026:AAHm96D1DUAblJ10C2CZv6_0fN0gwuOEMOs'; // BotFather-дан алған токен
+      fetch(`https://api.telegram.org/bot${botToken}/deleteMessage?chat_id=ВАШ_CHAT_ID&message_id=${updateId}`)
+        .then(() => {
+          loadOrders(); // Кестені қайта жүктеу
+        })
+        .catch(err => alert('Хабарламаны өшіру сәтсіз аяқталды'));
     }
   </script>
 </body>
