@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тапсырыс беру</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; }
+    .container { background:#111; padding:30px; border-radius:12px; width:100%; max-width:400px; text-align:center; box-shadow:0 0 15px rgba(0,0,0,0.7); }
+    h1 { color:#f1c40f; margin-bottom:10px; }
+    p { margin-bottom:20px; }
+    form { display:flex; flex-direction:column; }
+    label { text-align:left; margin:10px 0 5px; }
+    input, select { padding:10px; border:none; border-radius:6px; margin-bottom:15px; font-size:16px; background:#222; color:#fff; }
+    input:focus, select:focus { outline:2px solid #f1c40f; }
+    button { background:#f1c40f; color:#000; padding:12px; border:none; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer; transition:0.3s; }
+    button:hover { background:#fff; color:#000; }
+    .phone-group { display:flex; }
+    .phone-group input:first-child { width:60px; text-align:center; border-radius:6px 0 0 6px; background:#222; border:none; color:#fff; }
+    .phone-group input:last-child { flex:1; border-radius:0 6px 6px 0; border:none; background:#222; color:#fff; }
+    .message { margin-top:15px; font-weight:bold; color:#f1c40f; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Қош келдіңіздер!</h1>
+    <p>Тапсырыс беру үшін төмендегі форманы толтырыңыз 👇</p>
+
+    <form id="orderForm">
+      <label for="name">Аты-жөні</label>
+      <input type="text" id="name" name="name" placeholder="Аты-жөніңізді жазыңыз" required>
+
+      <label for="phone">Телефон нөмірі</label>
+      <div class="phone-group">
+        <input type="text" value="+7" disabled>
+        <input type="tel" id="phone" name="phone" placeholder="777 777 77 77" required>
+      </div>
+
+      <label for="session">Фотосессия түрі</label>
+      <select id="session" name="session" required>
+        <option value="">Таңдаңыз...</option>
+        <option value="Студиялық">Студиялық</option>
+        <option value="Далада">Далада</option>
+        <option value="Отбасылық">Отбасылық</option>
+        <option value="Жеке">Жеке</option>
+        <option value="Үйлену той">Үйлену той</option>
+      </select>
+
+      <button type="submit">Жіберу</button>
+    </form>
+
+    <div id="message" class="message" style="display:none;">Менеджерлер сізбен хабарласады.</div>
+  </div>
+
+  <script>
+    const phoneInput = document.getElementById("phone");
+
+    // +7 777 777 77 77 формат
+    phoneInput.addEventListener("input", function() {
+      let x = this.value.replace(/\D/g, '').substring(0, 10); // тек соңғы 10 цифр
+      let formatted = "";
+      if(x.length > 0) formatted = x.substring(0,3);
+      if(x.length >= 4) formatted += " " + x.substring(3,6);
+      if(x.length >= 7) formatted += " " + x.substring(6,8);
+      if(x.length >= 9) formatted += " " + x.substring(8,10);
+      this.value = formatted.trim();
+    });
+
+    const form = document.getElementById('orderForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = '+7 ' + document.getElementById('phone').value;
+      const session = document.getElementById('session').value;
+
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push({name: name, phone: phone, session: session});
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      message.style.display = 'block';
+      form.reset();
+    });
+  </script>
+</body>
+</html>

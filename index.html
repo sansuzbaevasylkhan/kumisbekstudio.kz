@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kumisbek Studio</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+    body {background:#000;color:#fff;line-height:1.6;}
+
+    /* Навигация */
+    nav {
+      width:100%;
+      background:#000;
+      padding:12px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:fixed;
+      top:0;left:0;
+      z-index:1000;
+    }
+    nav .logo {
+      display:flex;
+      align-items:center;
+    }
+    nav .logo img {
+      height:45px;
+      margin-right:10px;
+      border-radius:4px;
+    }
+    .social-icons {
+      display:flex;
+      align-items:center;
+      margin-left:10px;
+    }
+    .social-icons a {
+      margin-right:10px;
+      display:block;
+    }
+    .social-icons img {
+      width:50px;
+      height:50px;
+      border-radius:4px;
+      transition:transform 0.2s;
+    }
+    .social-icons img:hover { transform:scale(1.1); }
+
+    /* Секциялар */
+    section{padding:80px 20px;text-align:center;}
+    section h2{font-size:2rem;margin-bottom:20px;color:#f1c40f;}
+
+    header{
+        background:url('https://images.unsplash.com/photo-1519183071298-a2962be96c57?auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
+        height:100vh;display:flex;justify-content:center;align-items:center;
+        text-align:center;position:relative;color:#fff;
+    }
+    header::after{
+      content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);
+    }
+    header .content { position: relative; z-index:2; }
+    header h1 { font-size:3rem;margin-bottom:10px; }
+    header p { font-size:1.2rem;margin-bottom:20px; }
+    .btn {
+      background:#f1c40f;color:#000;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;
+    }
+    .btn:hover { background:#fff;color:#000; }
+
+    /* Слайдер */
+    .slider {position:relative;overflow:hidden;width:100%;max-width:1000px;margin:0 auto;}
+    .slides {display:flex;transition:transform 0.8s ease;}
+    .slide {min-width:100%;box-sizing:border-box;padding:20px;}
+    .card {background:#111;padding:20px;border-radius:12px;text-align:center;}
+    .card img {max-width:200px;border-radius:12px;margin-bottom:10px;}
+    .card h3 {margin:10px 0 5px;font-size:1.3rem;color:#f1c40f;}
+    .prev, .next {
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,0.6);color:#f1c40f;border:none;font-size:30px;
+      padding:10px 15px;cursor:pointer;border-radius:50%;
+    }
+    .prev { left:10px; }
+    .next { right:10px; }
+
+    /* Байланыс */
+    .contact-btn {
+      display:inline-block;background:#f1c40f;color:#000;padding:12px 24px;border-radius:6px;
+      text-decoration:none;font-weight:bold;margin-top:20px;
+    }
+    .contact-btn:hover { background:#fff;color:#000; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <a href="index.html"><img src="logo2.png" alt="Kumisbek Studio Logo"></a>
+    <div class="social-icons">
+      <a href="https://youtube.com/@kumisbekstudio" target="_blank">
+        <img src="3.png" alt="YouTube">
+      </a>
+      <a href="https://www.instagram.com/kumisbekstudiokz?igsh=ZmdzbHd4cHgyeG01" target="_blank">
+        <img src="instagram.jpg" alt="Instagram">
+      </a>
+    </div>
+  </div>
+</nav>
+
+<header id="home">
+  <div class="content">
+    <img src="logo.jpg" alt="logo" style="width:220px; margin-bottom:100px;">
+    <h1>Kumisbek Studio</h1>
+    <p>Әр сәт – естелікке айналады 📸</p>
+    <a href="#about" class="btn">Толығырақ ↓</a>
+  </div>
+</header>
+
+<section id="about">
+  <h2>Иесі – Күмісбек</h2>
+  <p>Фотостудияның негізін қалаушы. Шығармашылық пен кәсібилікті біріктірген фотограф.</p>
+  <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?auto=format&fit=crop&w=500&q=80" 
+       alt="Күмісбек" style="max-width:300px;border-radius:12px;margin-top:20px;">
+</section>
+
+<section id="services">
+  <h2>Біздің қызметкерлер</h2>
+  <div class="slider" id="slider">
+    <div class="slides" id="slides">
+      <div class="slide">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=500&q=80" alt="Қызметкер">
+          <h3>Айгерім</h3>
+          <p>Визажист</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80" alt="Қызметкер">
+          <h3>Бекзат</h3>
+          <p>Оператор</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=80" alt="Қызметкер">
+          <h3>Гүлботам</h3>
+          <p>Креативті дизайнер</p>
+        </div>
+      </div>
+    </div>
+    <button class="prev" onclick="prevSlide()">&#10094;</button>
+    <button class="next" onclick="nextSlide()">&#10095;</button>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Тапсырыс беру</h2>
+  <p>Фотосессияға жазылу үшін төмендегі батырманы басыңыз 👇</p>
+  <a href="order.html" class="contact-btn">Тапсырыс беру</a>
+</section>
+
+<script>
+  // Слайдер
+  let index = 0;
+  const slides = document.querySelector(".slides");
+  const totalSlides = document.querySelectorAll(".slide").length;
+
+  function showSlideManual(i){
+    index = (i + totalSlides) % totalSlides;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+  function nextSlide(){ showSlideManual(index+1); }
+  function prevSlide(){ showSlideManual(index-1); }
+
+  // Автоматты слайд
+  setInterval(()=>{ nextSlide(); },4000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Тапсырыстар</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#000; color:#fff; padding:20px; text-align:center; }
+    h1 { color:#f1c40f; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th, td { border:1px solid #f1c40f; padding:10px; text-align:left; }
+    th { background:#111; }
+    td { background:#222; }
+    #passwordDiv { margin-top:50px; }
+    input[type="password"] { padding:10px; border-radius:6px; border:none; font-size:16px; }
+    button { padding:10px 20px; margin-left:10px; border:none; border-radius:6px; font-size:16px; background:#f1c40f; color:#000; cursor:pointer; }
+    button:hover { background:#fff; color:#000; }
+    .deleteBtn { background:red; color:#fff; margin-left:5px; }
+    .deleteBtn:hover { background:#fff; color:red; }
+  </style>
+</head>
+<body>
+  <div id="passwordDiv">
+    <h2>Құпиясөзді енгізіңіз</h2>
+    <input type="password" id="adminPassword" placeholder="Құпиясөз">
+    <button onclick="checkPassword()">Кіру</button>
+    <p id="errorMsg" style="color:red; margin-top:10px;"></p>
+  </div>
+
+  <div id="content" style="display:none;">
+    <h1>Келген тапсырыстар</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Аты-жөні</th>
+          <th>Телефон</th>
+          <th>Фотосессия түрі</th>
+          <th>Уақыт</th>
+          <th>Күн</th>
+          <th>Әрекет</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const correctPassword = "2007"; // Құпиясөзді осында қойыңыз
+
+    function checkPassword(){
+      const input = document.getElementById('adminPassword').value;
+      if(input === correctPassword){
+        document.getElementById('passwordDiv').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        loadOrders();
+      } else {
+        document.getElementById('errorMsg').textContent = "Құпиясөз дұрыс емес!";
+      }
+    }
+
+    function loadOrders(){
+      const ordersTable = document.getElementById('ordersTable');
+      ordersTable.innerHTML = ''; // Кестені тазалау
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+      orders.forEach((order, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${order.name}</td>
+          <td>${order.phone}</td>
+          <td>${order.session}</td>
+          <td>${order.time || '-'}</td>
+          <td>${order.date || '-'}</td>
+          <td><button class="deleteBtn" onclick="deleteOrder(${index})">Өшіру</button></td>
+        `;
+        ordersTable.appendChild(tr);
+      });
+    }
+
+    function deleteOrder(index){
+      let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      if(confirm("Бұл тапсырысты өшіргіңіз келеді ме?")){
+        orders.splice(index, 1); // Тапсырысты массивтен жою
+        localStorage.setItem('orders', JSON.stringify(orders)); // Жаңартылған массивті сақтау
+        loadOrders(); // Кестені қайта салу
+      }
+    }
+  </script>
+</body>
+</html>
